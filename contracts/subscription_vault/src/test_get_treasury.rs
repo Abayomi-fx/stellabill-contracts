@@ -100,7 +100,8 @@ fn treasury_follows_the_change_after_the_timelock_elapses() {
     set_time(&te, 1_000);
     let treasury = Address::generate(&te.env);
 
-    te.client.queue_treasury_change(&te.admin, &treasury, &1_000);
+    te.client
+        .queue_treasury_change(&te.admin, &treasury, &1_000);
     te.jump(TREASURY_CHANGE_DELAY_SECS + 1);
     te.client.execute_treasury_change(&te.admin);
 
@@ -181,7 +182,11 @@ fn an_over_limit_fee_bps_leaves_the_treasury_unset() {
             .unwrap_err()
             .unwrap();
 
-        assert_eq!(err, Error::InvalidInput, "fee_bps {fee_bps} must be rejected");
+        assert_eq!(
+            err,
+            Error::InvalidInput,
+            "fee_bps {fee_bps} must be rejected"
+        );
         assert_eq!(read_treasury(&te), None);
     }
 }
