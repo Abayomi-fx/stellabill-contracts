@@ -27,7 +27,7 @@ use crate::admin;
 use crate::test_utils::setup::TestEnv;
 use crate::types::TreasurySplitEntry;
 use crate::Error;
-use soroban_sdk::{testutils::Address as _, Address, Vec};
+use soroban_sdk::{testutils::Address as _, testutils::Ledger as _, Address, Vec};
 
 /// Mirrors `admin::TREASURY_CHANGE_DELAY_SECS` (48 days).
 const TREASURY_CHANGE_DELAY_SECS: u64 = 48 * 24 * 60 * 60;
@@ -286,7 +286,7 @@ fn treasury_is_independent_of_the_multi_beneficiary_split() {
         beneficiary: Address::generate(&te.env),
         bps: 10_000,
     });
-    te.client.set_treasury_split(&te.admin, entries);
+    te.client.set_treasury_split(&te.admin, &entries);
 
     // Configuring split routing must not silently repoint the single treasury.
     assert_eq!(read_treasury(&te), Some(treasury));
